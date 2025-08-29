@@ -1,0 +1,15 @@
+filebeat.inputs:
+  - type: filestream
+    id: spring-logs
+    enabled: true
+    paths:
+      - /var/app/logs/application.log
+    parsers:
+      - ndjson:
+          target: ""            # ดัน key ทั้งหมดขึ้นมาที่ root
+          overwrite_keys: true  # ให้ทับค่าที่ซ้ำ (เช่น message, level)
+          add_error_key: true   # ถ้า parse พลาด จะมี field error
+
+# ส่งเข้า Logstash
+output.logstash:
+  hosts: ["logstash:5044"]
